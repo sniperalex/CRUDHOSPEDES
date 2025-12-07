@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-// Define a URL que o JavaScript vai chamar
 @WebServlet("/api/hospedes")
 public class HospedeController extends HttpServlet {
 
@@ -31,18 +30,15 @@ public class HospedeController extends HttpServlet {
 
     public HospedeController() {
         this.hospedeDAO = new HospedeDAO();
-        // Configura o Gson para entender LocalDate
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
         
-        // Inicializa as estratégias de validação (Strategy Pattern)
         this.validadores = new ArrayList<>();
         this.validadores.add(new ValidadorDadosObrigatorios());
         this.validadores.add(new ValidadorCpf());
     }
 
-    // LISTAR (GET) - RF0104
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -55,23 +51,20 @@ public class HospedeController extends HttpServlet {
             out.print(json);
         } catch (Exception e) {
             resp.setStatus(500);
-            out.print("{\"erro\": \"Erro ao listar hóspedes: " + e.getMessage() + "\"}");
+            out.print("{\"erro\": \"Erro ao listar: " + e.getMessage() + "\"}");
         }
     }
 
-    // CADASTRAR (POST) - RF0101
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processarRequisicao(req, resp, "CADASTRAR");
     }
 
-    // ATUALIZAR (PUT) - RF0102
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processarRequisicao(req, resp, "ATUALIZAR");
     }
 
-    // INATIVAR (DELETE) - RF0103
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -85,41 +78,36 @@ public class HospedeController extends HttpServlet {
                 out.print("{\"erro\": \"ID obrigatório para exclusão.\"}");
                 return;
             }
-            
             hospedeDAO.inativar(Integer.parseInt(idParam));
             out.print("{\"mensagem\": \"Hóspede inativado com sucesso.\"}");
-            
         } catch (Exception e) {
             resp.setStatus(500);
             out.print("{\"erro\": \"Erro ao inativar: " + e.getMessage() + "\"}");
         }
     }
 
-    // Método auxiliar para processar Post e Put (evitar repetição de código)
     private void processarRequisicao(HttpServletRequest req, HttpServletResponse resp, String tipo) throws IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
         try {
-            // 1. Ler o JSON enviado pelo JavaScript
             BufferedReader reader = req.getReader();
             Hospede hospede = gson.fromJson(reader, Hospede.class);
 
-            // 2. Executar validações (Strategy Pattern)
+            // Validações (Strategy)
             for (IValidador validador : validadores) {
                 String erro = validador.validar(hospede);
                 if (erro != null) {
-                    resp.setStatus(400); // Bad Request
+                    resp.setStatus(400); 
                     out.print("{\"erro\": \"" + erro + "\"}");
                     return;
                 }
             }
 
-            // 3. Executar ação no Banco via DAO
             if ("CADASTRAR".equals(tipo)) {
                 hospedeDAO.salvar(hospede);
-                resp.setStatus(201); // Created
+                resp.setStatus(201);
                 out.print("{\"mensagem\": \"Cadastrado com sucesso!\"}");
             } else if ("ATUALIZAR".equals(tipo)) {
                 hospedeDAO.atualizar(hospede);
@@ -127,9 +115,20 @@ public class HospedeController extends HttpServlet {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            resp.setStatus(500);
-            out.print("{\"erro\": \"Erro interno: " + e.getMessage() + "\"}");
+            // --- AQUI ESTÁ A CORREÇÃO ---
+            String erroMsg = e.getMessage();
+            
+            // Verifica se o erro do banco diz "duplicate key" (padrão do PostgreSQL)
+            if (erroMsg != null && erroMsg.contains("duplicate key")) {
+                resp.setStatus(409); // Código HTTP 409 = Conflito
+                out.print("{\"erro\": \"Este CPF já está cadastrado no sistema.\"}");
+            } else {
+                e.printStackTrace(); // Mostra erro no terminal
+                resp.setStatus(500);
+                // Escapamos as aspas para não quebrar o JSON
+                String msgLimpa = erroMsg != null ? erroMsg.replace("\"", "'") : "Erro desconhecido";
+                out.print("{\"erro\": \"Erro interno: " + msgLimpa + "\"}");
+            }
         }
     }
 }

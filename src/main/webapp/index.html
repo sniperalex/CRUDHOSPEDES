@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">CPF *</label>
-                        <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required>
+                        <input type="text" class="form-control" id="cpf" placeholder="Apenas números" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Data Nascimento *</label>
@@ -43,36 +43,36 @@
                         <input type="email" class="form-control" id="email" required>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Telefone</label>
-                        <input type="text" class="form-control" id="telefone">
+                        <label class="form-label">Telefone *</label>
+                        <input type="text" class="form-control" id="telefone" required>
                     </div>
                 </div>
 
-                <h5 class="mt-4 mb-3">Endereço</h5>
+                <h5 class="mt-4 mb-3">Endereço Completo</h5>
                 <div class="row g-3">
                     <div class="col-md-2">
-                        <label class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep">
+                        <label class="form-label">CEP *</label>
+                        <input type="text" class="form-control" id="cep" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Logradouro</label>
-                        <input type="text" class="form-control" id="logradouro">
+                        <label class="form-label">Logradouro *</label>
+                        <input type="text" class="form-control" id="logradouro" required>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Número</label>
-                        <input type="text" class="form-control" id="numero">
+                        <label class="form-label">Número *</label>
+                        <input type="text" class="form-control" id="numero" required>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Bairro</label>
-                        <input type="text" class="form-control" id="bairro">
+                        <label class="form-label">Bairro *</label>
+                        <input type="text" class="form-control" id="bairro" required>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Cidade *</label>
                         <input type="text" class="form-control" id="cidade" required>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Estado (UF)</label>
-                        <input type="text" class="form-control" id="estado" maxlength="2">
+                        <label class="form-label">Estado (UF) *</label>
+                        <input type="text" class="form-control" id="estado" maxlength="2" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Complemento</label>
@@ -94,21 +94,29 @@
             <span>Hóspedes Cadastrados</span>
             <button class="btn btn-sm btn-light" onclick="carregarHospedes()">Atualizar Lista</button>
         </div>
-        <div class="card-body table-responsive">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>E-mail</th>
-                        <th>Cidade/UF</th>
-                        <th width="150">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="tabelaCorpo">
-                    <!-- Preenchido via JavaScript -->
-                </tbody>
-            </table>
+        <div class="card-body">
+            
+            <!-- CAMPO DE FILTRO (RF0104) -->
+            <div class="mb-3">
+                <input type="text" id="filtroInput" class="form-control" placeholder="🔍 Filtrar por Nome, CPF ou Cidade..." onkeyup="filtrarTabela()">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>E-mail</th>
+                            <th>Cidade/UF</th>
+                            <th width="150">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaCorpo">
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

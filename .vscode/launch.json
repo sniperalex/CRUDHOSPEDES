@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "type": "java",
+        "name": "Main",
+        "request": "launch",
+        "mainClass": "br.com.hotel.Main",
+        "projectName": "CRUD HOSPEDES_e015a0af"
+    },
+    {
+        "type": "java",
+        "name": "Launch Main (Maven)",
+        "request": "launch",
+        "mainClass": "br.com.hotel.Main",
+        "projectName": "sistema-hotel",
+        "preLaunchTask": "maven: compile",
+        "console": "integratedTerminal"
+    },
+    {
+        "type": "java",
+        "name": "Attach (remote)",
+        "request": "attach",
+        "hostName": "localhost",
+        "port": 5005
+    }
+]
+}

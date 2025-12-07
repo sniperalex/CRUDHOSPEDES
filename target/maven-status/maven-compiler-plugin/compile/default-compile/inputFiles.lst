@@ -1,0 +1,8 @@
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\dao\HospedeDAO.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\controller\HospedeController.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\util\ConexaoBD.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\model\Hospede.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\strategy\ValidadorCpf.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\util\LocalDateAdapter.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\strategy\IValidador.java
+C:\Users\maq\Desktop\CRUD HOSPEDES\src\main\java\br\com\hotel\strategy\ValidadorDadosObrigatorios.java

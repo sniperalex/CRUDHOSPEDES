@@ -1,0 +1,8 @@
+br\com\hotel\controller\HospedeController.class
+br\com\hotel\strategy\ValidadorCpf.class
+br\com\hotel\strategy\ValidadorDadosObrigatorios.class
+br\com\hotel\util\ConexaoBD.class
+br\com\hotel\dao\HospedeDAO.class
+br\com\hotel\model\Hospede.class
+br\com\hotel\strategy\IValidador.class
+br\com\hotel\util\LocalDateAdapter.class
